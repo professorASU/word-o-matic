@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Word-O-Matic 2000</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<style>
+			.port {
+				width: 80%;
+				margin-right: auto;
+				margin-left: auto;
+				max-width: 450px;
+				margin-top: 20px;
+			}
+			.chunk {
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+			.credit {
+				position: fixed;	
+				bottom: 10px;
+				left: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="port">
+			<h3>Word-O-Matic 2000</h3>
+		</div>
+		<div class="port">
+		<div class="chunk">
+			<input id="nuword">
+			<button id="inpw">Input word(s)</button>
+		</div>
+		<div class="chunk">
+			<span><b>Inputted words:</b> <span id="inpWD">0</span> words</span><br>
+		</div>
+		<hr>
+		<div class="chunk">
+			<div class="chunk">
+				<b>Number of words to extract (<span id="ptrnCnt">0</span> Patterns): </b>
+				<input type="number" min=0 id="extractNum">
+			</div>
+			<div class="chunk">
+				<button id="extbtn">Extract</button><br>
+				<b>Result: </b>
+				<span id="resultSpan">--</span> 
+				<button id="srch" disabled>Search words (Google)</button><br>
+			</div>
+		</div>
+		<hr>
+		<div class="chunk">
+			<b>list of words:</b><br>
+			<div id="list">none</div>
+		</div>
+		</div>
+		
+		<span class="credit">(c)2021 山本朋義</span>
+		
+		<script>
+			//global
+			var words = new Array();
+			
+			//dom var
+			var extractNum = document.getElementById("extractNum");
+			var nuword = document.getElementById("nuword");
+			var inpw = document.getElementById("inpw");
+			var inpWD = document.getElementById("inpWD");
+			var clsmdl = document.getElementById("clsmdl");
+			var extbtn = document.getElementById("extbtn");
+			var resultSpan = document.getElementById("resultSpan");
+			var list = document.getElementById("list");
+			var srch = document.getElementById("srch");
+			var ptrnCnt = document.getElementById("ptrnCnt");
+			
+			extractNum.onkeyup = function () {
+				extractNum.value = Math.floor(extractNum.value);
+				ptrnCnt.innerHTML = combinations(words.length, extractNum.value);
+			}
+			
+			inpw.onclick = function () {
+				var wordPrex = nuword.value.split(" ");
+				for( i=0; i<wordPrex.length; i++ ) {
+					words.push(wordPrex[i]);
+				}
+				inpWD.innerHTML = words.length;
+				nuword.value = "";
+				list.innerHTML = words.join("<br>");
+			}
+			
+			var prevRes;
+			extbtn.onclick = function () {
+				var result = new Array();
+				for( i=0; i<extractNum.value;i++ ) {
+					var randIndexx = randInt(0, words.length-1);
+					console.log(randIndexx);
+					console.log(words[randIndexx]);
+					result.push(words[randIndexx]);
+					words.splice(randIndexx, 1);
+				}
+				//reset word array
+				for( i=0; i<result.length; i++ ) {
+					words.push(result[i]);
+				}
+				
+				console.log(result);
+				prevRes = result.join(" ");
+				resultSpan.innerHTML = prevRes;
+				srch.disabled = false;
+				
+			}
+			
+			srch.onclick = function () {
+				window.open("https://www.google.com/search?q="+prevRes);
+			}
+			
+			function randInt(min, max) {
+				min = Math.ceil(min);
+				max = Math.floor(max);
+				return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+			}
+			
+			function product_Range(a,b) {
+  var prd = a,i = a;
+ 
+  while (i++< b) {
+    prd*=i;
+  }
+  return prd;
+}
+
+
+function combinations(n, r) 
+{
+  if (n==r) 
+  {
+    return 1;
+  } 
+  else 
+  {
+    r=(r < n-r) ? n-r : r;
+    return product_Range(r+1, n)/product_Range(1,n-r);
+  }
+}
+			
+			
+			
+			window.onload = function () {
+				extractNum.value = 0;
+			}
+		</script>
+	</body>
+</html>
