@@ -55,6 +55,8 @@
 		</div>
 		</div>
 		
+		<span class="credit">(c)2021 山本朋義</span>
+		
 		<script>
 			//global
 			var words = new Array();
@@ -82,8 +84,10 @@
 				zoneX = words.length;
 				zoneY = 1;
 				for( i=0; i<(extractNum.value-1); i++ ) {
-					zoneX = zoneX * (zoneX-1-i);
-					zoneY = zoneY * (zoneY+1+i);
+					zoneX = zoneX * (words.length-1-i);
+					zoneY = zoneY * (1+parseInt(i));
+					
+					console.log((words.length-1-i)+","+((1+parseInt(i)));
 				}
 				var zone = zoneX/zoneY;
 				ptrnCnt.innerHTML = zone;
