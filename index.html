@@ -25,7 +25,7 @@
 	</head>
 	<body>
 		<div class="port">
-			<h3><i>Word-O-Matic 2000</i></h3>
+			<h3>Word-O-Matic 2000</h3>
 		</div>
 		<div class="port">
 		<div class="chunk">
@@ -86,8 +86,6 @@
 				for( i=0; i<(extractNum.value-1); i++ ) {
 					zoneX = zoneX * (words.length-1-i);
 					zoneY = zoneY * (1+parseInt(i));
-					
-					console.log((words.length-1-i)+","+((1+parseInt(i)));
 				}
 				var zone = zoneX/zoneY;
 				ptrnCnt.innerHTML = zone;
