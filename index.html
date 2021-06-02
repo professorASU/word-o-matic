@@ -55,8 +55,6 @@
 		</div>
 		</div>
 		
-		<span class="credit">(c)2021 山本朋義</span>
-		
 		<script>
 			//global
 			var words = new Array();
@@ -75,7 +73,20 @@
 			
 			extractNum.onkeyup = function () {
 				extractNum.value = Math.floor(extractNum.value);
-				ptrnCnt.innerHTML = combinations(words.length, extractNum.value);
+				if(extractNum.value > words.length) {
+					extractNum.value = words.length;
+				}
+				
+				
+				var zoneX, zoneY;
+				zoneX = words.length;
+				zoneY = 1;
+				for( i=0; i<(extractNum.value-1); i++ ) {
+					zoneX = zoneX * (zoneX-1-i);
+					zoneY = zoneY * (zoneY+1+i);
+				}
+				var zone = zoneX/zoneY;
+				ptrnCnt.innerHTML = zone;
 			}
 			
 			inpw.onclick = function () {
@@ -93,8 +104,6 @@
 				var result = new Array();
 				for( i=0; i<extractNum.value;i++ ) {
 					var randIndexx = randInt(0, words.length-1);
-					console.log(randIndexx);
-					console.log(words[randIndexx]);
 					result.push(words[randIndexx]);
 					words.splice(randIndexx, 1);
 				}
@@ -103,7 +112,6 @@
 					words.push(result[i]);
 				}
 				
-				console.log(result);
 				prevRes = result.join(" ");
 				resultSpan.innerHTML = prevRes;
 				srch.disabled = false;
@@ -119,31 +127,6 @@
 				max = Math.floor(max);
 				return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 			}
-			
-			function product_Range(a,b) {
-  var prd = a,i = a;
- 
-  while (i++< b) {
-    prd*=i;
-  }
-  return prd;
-}
-
-
-function combinations(n, r) 
-{
-  if (n==r) 
-  {
-    return 1;
-  } 
-  else 
-  {
-    r=(r < n-r) ? n-r : r;
-    return product_Range(r+1, n)/product_Range(1,n-r);
-  }
-}
-			
-			
 			
 			window.onload = function () {
 				extractNum.value = 0;
